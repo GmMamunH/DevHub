@@ -2,15 +2,25 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { postAnswer } from "@/redux/answerSlice";
 import { AppDispatch } from "@/redux/store";
+import { toast } from "react-toastify";
 
 export default function AnswerForm({ questionId }: { questionId: string }) {
   const dispatch = useDispatch<AppDispatch>();
   const [text, setText] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(postAnswer({ questionId, text }));
-    setText("");
+
+    try {
+      await dispatch(postAnswer({ questionId, text })); 
+
+      toast.success("Answer posted successfully!"); // ✅ Notification দেখাও
+      setText("");
+    } catch (error) {
+      toast.error("Failed to post answer!"); 
+    }
+
+    
   };
 
   return (
