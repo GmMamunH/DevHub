@@ -44,7 +44,7 @@ export default function AskQuestion() {
           onChange={handleChange}
         />
         <textarea
-          className="border p-2 w-full mb-3"
+          className="border p-2 w-full h-36 mb-6"
           name="description"
           placeholder="Description"
           value={formData.description} // ✅ Input ফাঁকা রাখার জন্য value যুক্ত করো

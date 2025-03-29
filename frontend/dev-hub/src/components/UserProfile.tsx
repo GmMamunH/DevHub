@@ -1,34 +1,22 @@
-"use client";
-import { useEffect } from "react";
+"use client"
 import { useSelector, useDispatch } from "react-redux";
 import { fetchUserProfile } from "@/redux/userSlice";
 import { RootState, AppDispatch } from "@/redux/store";
 import { useParams } from "next/navigation";
+import { useEffect } from "react";
 
 export default function UserProfile() {
   const { userId } = useParams();
   const dispatch = useDispatch<AppDispatch>();
-  const { user, questions, answers, loading, error } = useSelector(
+  const { user, questions, answers } = useSelector(
     (state: RootState) => state.user
   );
 
-//   useEffect(() => {
-//     if (userId) {
-//       dispatch(fetchUserProfile(userId));
-//     }
-//   }, [dispatch, userId]);
-useEffect(() => {
-  if (userId) {
-    console.log(`Fetching data for userId: ${userId}`);
-    dispatch(fetchUserProfile(userId));
-  }
-}, [dispatch, userId]);
+  useEffect(() => {
+    if (userId) dispatch(fetchUserProfile(userId));
+  }, [dispatch, userId]);
 
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
-
-  if (!user) return <p>User not found</p>;
+  if (!user) return <p>Loading...</p>;
 
   return (
     <div className="p-6 bg-gray-100 rounded-lg">

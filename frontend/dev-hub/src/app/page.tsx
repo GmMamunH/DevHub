@@ -26,7 +26,7 @@ export default function Home() {
   const displayQuestions = searchResults !== null ? searchResults : questions;
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 p-4">
+    <div className="max-w-4xl mx-auto mb-5 p-4">
       <h2 className="text-2xl font-bold text-center mb-6 text-white">
         Recent Questions
       </h2>
@@ -41,13 +41,15 @@ export default function Home() {
             key={question._id}
             className="p-4 bg-teal-800 shadow-lg rounded-lg mb-4 transition hover:scale-105"
           >
-            <h3 className="text-lg font-bold text-white">
+            <h3 className="text-lg font-bold text-white pb-2">
               {question.title}
               <span className="text-sm text-gray-300 ml-2">
                 by {question.user.username}
               </span>
             </h3>
-            <p className="text-gray-200">{question.description}</p>
+            <p className="text-gray-200 whitespace-pre-line text-base">
+              {question.description}
+            </p>
 
             <Link href={`/questions/${question._id}`}>
               <button className="mt-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md">

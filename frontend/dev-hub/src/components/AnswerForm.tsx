@@ -12,24 +12,23 @@ export default function AnswerForm({ questionId }: { questionId: string }) {
     e.preventDefault();
 
     try {
-      await dispatch(postAnswer({ questionId, text })); 
+      await dispatch(postAnswer({ questionId, text }));
 
       toast.success("Answer posted successfully!"); // ✅ Notification দেখাও
       setText("");
     } catch (error) {
-      toast.error("Failed to post answer!"); 
+      toast.error("Failed to post answer!");
     }
-
-    
   };
 
   return (
     <form onSubmit={handleSubmit} className="mt-4">
       <textarea
-        className="border p-2 w-full mb-3"
+        className="border p-2 w-full mb-3 h-36"
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder="Write your answer..."
+        required
       ></textarea>
       <button className="bg-green-500 text-white px-4 py-2">
         Submit Answer
