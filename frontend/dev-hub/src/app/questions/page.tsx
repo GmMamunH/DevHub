@@ -5,8 +5,10 @@ import { toast } from "react-toastify"; // ✅ Toastify ইম্পোর্ট
 import "react-toastify/dist/ReactToastify.css"; // ✅ Toastify স্টাইল ইম্পোর্ট করো
 import { postQuestion } from "@/redux/questionSlice";
 import { AppDispatch } from "@/redux/store";
+import { useRouter } from "next/navigation";
 
 export default function AskQuestion() {
+  const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const [formData, setFormData] = useState({ title: "", description: "" });
 
@@ -23,6 +25,7 @@ export default function AskQuestion() {
       await dispatch(postQuestion(formData)).unwrap(); // ✅ API কল সফল হলে
       toast.success("Question posted successfully!"); // ✅ Notification দেখাও
       setFormData({ title: "", description: "" }); // ✅ ইনপুট ফাঁকা করো
+      router.push("/");
     } catch (error) {
       toast.error("Failed to post question!"); // ✅ Error হলে নোটিফিকেশন দেখাও
     }
