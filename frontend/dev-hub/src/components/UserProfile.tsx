@@ -15,8 +15,11 @@ export default function UserProfile() {
   useEffect(() => {
     if (userId) dispatch(fetchUserProfile(userId));
   }, [dispatch, userId]);
+  console.log(user);
+  
 
   if (!user) return <p>Loading...</p>;
+
 
   return (
     <div className="p-6 bg-gray-100 rounded-lg">

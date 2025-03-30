@@ -4,6 +4,7 @@ export const fetchUserProfile = createAsyncThunk(
   "user/fetchProfile",
   async (userId: string) => {
     const token = localStorage.getItem("token");
+    console.log("Token:", token); 
     const response = await fetch(
       `http://localhost:5000/api/users/profile/${userId}`,
       {

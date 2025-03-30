@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { postAnswer } from "@/redux/answerSlice";
@@ -140,12 +141,12 @@ const extensions = [
   }),
   Twitter,
 ];
+import "reactjs-tiptap-editor/style.css";
 
 export default function AnswerEditor({ questionId }: { questionId: string }) {
   const dispatch = useDispatch<AppDispatch>();
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
-  const refEditor = React.useRef<any>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -170,7 +171,6 @@ export default function AnswerEditor({ questionId }: { questionId: string }) {
     <form onSubmit={handleSubmit} className="mt-4 space-y-3">
       {/* Tiptap Editor */}
       <RcTiptapEditor
-        ref={refEditor}
         content={content}
         onChangeContent={setContent}
         extensions={extensions}
