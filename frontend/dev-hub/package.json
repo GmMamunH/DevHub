@@ -13,10 +13,9 @@
     "next": "15.2.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-markdown": "^10.1.0",
     "react-redux": "^9.2.0",
     "react-toastify": "^11.0.5",
-    "rehype-highlight": "^7.0.2"
+    "reactjs-tiptap-editor": "^0.2.12"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

@@ -5,6 +5,7 @@ import { fetchQuestions } from "@/redux/questionSlice";
 import AnswerList from "@/components/AnswerList";
 import AnswerForm from "@/components/AnswerForm";
 import { RootState, AppDispatch } from "@/redux/store";
+import AnswerEditor from "@/components/AnswerEditor";
 
 interface Question {
   _id: string;
@@ -47,7 +48,8 @@ export default function QuestionDetail() {
         <h2 className="text-2xl font-bold py-2">{question.title}</h2>
         <p className="whitespace-pre-line text-base">{question.description}</p>
       </div>
-      <AnswerForm questionId={questionId} />
+      {/* <AnswerForm questionId={questionId} /> */}
+      <AnswerEditor questionId={questionId} />
       <AnswerList questionId={questionId} />
     </div>
   );

@@ -47,7 +47,7 @@ export default function Home() {
                 by {question.user.username}
               </span>
             </h3>
-            <p className="text-gray-200 whitespace-pre-line text-base">
+            <p className="text-gray-200 whitespace-pre-line text-base line-clamp-2">
               {question.description}
             </p>
 
