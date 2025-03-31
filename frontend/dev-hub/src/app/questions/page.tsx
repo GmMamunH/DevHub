@@ -1,11 +1,167 @@
 "use client";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { toast } from "react-toastify"; // ✅ Toastify ইম্পোর্ট করো
-import "react-toastify/dist/ReactToastify.css"; // ✅ Toastify স্টাইল ইম্পোর্ট করো
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { postQuestion } from "@/redux/questionSlice";
 import { AppDispatch } from "@/redux/store";
 import { useRouter } from "next/navigation";
+import RcTiptapEditor from "reactjs-tiptap-editor";
+import {
+  Attachment,
+  BaseKit,
+  Blockquote,
+  Bold,
+  BulletList,
+  Clear,
+  Code,
+  CodeBlock,
+  Color,
+  ColumnActionButton,
+  Emoji,
+  Image,
+  ExportPdf,
+  ExportWord,
+  FontFamily,
+  FontSize,
+  FormatPainter,
+  Heading,
+  Highlight,
+  History,
+  HorizontalRule,
+  Iframe,
+  ImportWord,
+  Indent,
+  Italic,
+  Katex,
+  LineHeight,
+  Link,
+  Mention,
+  Mermaid,
+  MoreMark,
+  OrderedList,
+  SearchAndReplace,
+  SlashCommand,
+  Strike,
+  Table,
+  TableOfContents,
+  TaskList,
+  TextAlign,
+  TextDirection,
+  Twitter,
+  Underline,
+} from "reactjs-tiptap-editor/extension-bundle";
+// ✅ ইমেজ আপলোড ফাংশন (Blob URL তৈরি করবে)
+const handleImageUpload = (file: File): Promise<string> => {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      resolve(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  });
+};
+
+// Move the base64 conversion function outside to avoid redefinition
+function convertBase64ToBlob(base64: string) {
+  const arr = base64.split(",");
+  const mime = arr[0].match(/:(.*?);/)![1];
+  const bstr = atob(arr[1]);
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new Blob([u8arr], { type: mime });
+}
+
+const extensions = [
+  BaseKit.configure({
+    multiColumn: true,
+    placeholder: { showOnlyCurrent: true },
+    characterCount: { limit: 50_000 },
+  }),
+  History,
+  SearchAndReplace,
+  TextDirection,
+  TableOfContents,
+  FormatPainter.configure({ spacer: true }),
+  Clear,
+  FontFamily,
+  Heading.configure({ spacer: true }),
+  FontSize,
+  Bold,
+  Italic,
+  Underline,
+  Strike,
+  MoreMark,
+  Katex,
+  Emoji,
+  Image.configure({
+    upload: handleImageUpload, // ✅ ইমেজ আপলোড ফাংশন ব্যবহার করা হলো
+    resourceImage: "both", // ✅ ইউজার URL বা Upload দুইভাবেই ইমেজ দিতে পারবে
+    acceptMimes: ["image/png", "image/jpeg"], // ✅ শুধুমাত্র PNG এবং JPEG অনুমোদিত
+    maxSize: 5 * 1024 * 1024, // ✅ সর্বোচ্চ ৫MB পর্যন্ত ইমেজ আপলোড করা যাবে
+  }),
+
+  Color.configure({ spacer: true }),
+  Highlight,
+  BulletList,
+  OrderedList,
+  TextAlign.configure({ types: ["heading", "paragraph"], spacer: true }),
+  Indent,
+  LineHeight,
+  TaskList.configure({ spacer: true, taskItem: { nested: true } }),
+  Link,
+  Blockquote.configure({ spacer: true }),
+  SlashCommand,
+  HorizontalRule,
+  Code.configure({ toolbar: false }),
+  CodeBlock.configure({ defaultTheme: "dracula" }),
+  ColumnActionButton,
+  Table,
+  Iframe,
+  ExportPdf.configure({ spacer: true }),
+  ImportWord.configure({
+    upload: (files: File[]) => {
+      const f = files.map((file) => ({
+        src: URL.createObjectURL(file),
+        alt: file.name,
+      }));
+      return Promise.resolve(f);
+    },
+  }),
+  ExportWord,
+  Mention,
+  Attachment.configure({
+    upload: (file: any) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          const blob = convertBase64ToBlob(reader.result as string);
+          resolve(URL.createObjectURL(blob));
+        }, 300);
+      });
+    },
+  }),
+  Mermaid.configure({
+    upload: (file: any) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          const blob = convertBase64ToBlob(reader.result as string);
+          resolve(URL.createObjectURL(blob));
+        }, 300);
+      });
+    },
+  }),
+  Twitter,
+];
+import "reactjs-tiptap-editor/style.css";
 
 export default function AskQuestion() {
   const router = useRouter();
@@ -18,16 +174,20 @@ export default function AskQuestion() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleEditorChange = (content: string) => {
+    setFormData((prev) => ({ ...prev, description: content }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      await dispatch(postQuestion(formData)).unwrap(); // ✅ API কল সফল হলে
-      toast.success("Question posted successfully!"); // ✅ Notification দেখাও
-      setFormData({ title: "", description: "" }); // ✅ ইনপুট ফাঁকা করো
+      await dispatch(postQuestion(formData)).unwrap();
+      toast.success("Question posted successfully!");
+      setFormData({ title: "", description: "" });
       router.push("/");
     } catch (error) {
-      toast.error("Failed to post question!"); // ✅ Error হলে নোটিফিকেশন দেখাও
+      toast.error("Failed to post question!");
     }
   };
 
@@ -40,17 +200,18 @@ export default function AskQuestion() {
           type="text"
           name="title"
           placeholder="Title"
-          value={formData.title} // ✅ Input ফাঁকা রাখার জন্য value যুক্ত করো
+          value={formData.title}
           onChange={handleChange}
         />
-        <textarea
-          className="border p-2 w-full h-36 mb-6"
-          name="description"
-          placeholder="Description"
-          value={formData.description} // ✅ Input ফাঁকা রাখার জন্য value যুক্ত করো
-          onChange={handleChange}
-        ></textarea>
-        <button className="bg-blue-500 text-white px-4 py-2">
+
+        <RcTiptapEditor
+          content={formData.description}
+          onChangeContent={handleEditorChange}
+          extensions={extensions}
+          output="html"
+        />
+
+        <button className="bg-blue-500 text-white px-4 py-2 mt-4">
           Post Question
         </button>
       </form>

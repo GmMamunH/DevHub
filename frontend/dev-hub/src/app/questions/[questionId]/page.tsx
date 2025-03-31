@@ -46,7 +46,10 @@ export default function QuestionDetail() {
     <div className="max-w-3xl mx-auto mt-10">
       <div className="p-5 bg-teal-800 shadow-lg rounded-lg">
         <h2 className="text-2xl font-bold py-2">{question.title}</h2>
-        <p className="whitespace-pre-line text-base">{question.description}</p>
+        <div
+          className="text-gray-200 whitespace-pre-line text-base"
+          dangerouslySetInnerHTML={{ __html: question.description }}
+        ></div>
       </div>
       {/* <AnswerForm questionId={questionId} /> */}
       <AnswerEditor questionId={questionId} />

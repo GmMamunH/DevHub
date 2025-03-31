@@ -17,6 +17,7 @@ import {
   Color,
   ColumnActionButton,
   Emoji,
+  Image,
   ExportPdf,
   ExportWord,
   FontFamily,
@@ -48,6 +49,16 @@ import {
   Twitter,
   Underline,
 } from "reactjs-tiptap-editor/extension-bundle";
+// ✅ ইমেজ আপলোড ফাংশন (Blob URL তৈরি করবে)
+const handleImageUpload = (file: File): Promise<string> => {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      resolve(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  });
+};
 
 // Move the base64 conversion function outside to avoid redefinition
 function convertBase64ToBlob(base64: string) {
@@ -84,6 +95,13 @@ const extensions = [
   MoreMark,
   Katex,
   Emoji,
+  Image.configure({
+    upload: handleImageUpload, // ✅ ইমেজ আপলোড ফাংশন ব্যবহার করা হলো
+    resourceImage: "both", // ✅ ইউজার URL বা Upload দুইভাবেই ইমেজ দিতে পারবে
+    acceptMimes: ["image/png", "image/jpeg"], // ✅ শুধুমাত্র PNG এবং JPEG অনুমোদিত
+    maxSize: 5 * 1024 * 1024, // ✅ সর্বোচ্চ ৫MB পর্যন্ত ইমেজ আপলোড করা যাবে
+  }),
+
   Color.configure({ spacer: true }),
   Highlight,
   BulletList,
@@ -175,7 +193,6 @@ export default function AnswerEditor({ questionId }: { questionId: string }) {
         onChangeContent={setContent}
         extensions={extensions}
         output="html" // Change to 'json' if needed
-        className="border p-3 w-full h-full rounded-md shadow-sm"
       />
 
       {/* Flex button */}
