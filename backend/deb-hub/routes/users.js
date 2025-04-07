@@ -14,14 +14,16 @@ router.get("/profile/:userId", authMiddleware, async (req, res) => {
     const questions = await Question.find({ user: req.params.userId }).sort({
       createdAt: -1,
     });
-    const answers = await Answer.find({ user: req.params.userId }).sort({
-      createdAt: -1,
-    });
+
+    const answers = await Answer.find({ user: req.params.userId })
+      .populate("question", "_id title") // এখানে question data পাবে
+      .sort({ createdAt: -1 });
 
     res.json({ user, questions, answers });
   } catch (error) {
     res.status(500).json({ error: "Server error" });
   }
 });
+
 
 module.exports = router;

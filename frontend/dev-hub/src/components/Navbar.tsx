@@ -9,6 +9,8 @@ export default function Navbar() {
     (state: RootState) => state.auth
   );
   const dispatch = useDispatch<AppDispatch>();
+  console.log(user);
+  
 
   return (
     <nav className="bg-gray-800 text-white p-4 flex items-center justify-between">
@@ -24,7 +26,10 @@ export default function Navbar() {
           <Link href="/questions" className="bg-blue-500 px-3 py-1 rounded">
             Questions
           </Link>
-          <Link href="/profile" className="bg-blue-500 px-3 py-1 rounded">
+          <Link
+            href={`/profile/${user?.id}`}
+            className="bg-blue-500 px-3 py-1 rounded"
+          >
             Profile
           </Link>
           <div>
