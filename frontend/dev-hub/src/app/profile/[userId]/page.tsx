@@ -15,7 +15,6 @@ export default function UserProfile() {
   );
 
   // console.log(answers);
-  
 
   useEffect(() => {
     if (userId) dispatch(fetchUserProfile(userId));
@@ -44,8 +43,12 @@ export default function UserProfile() {
               {relatedAnswers.length > 0 ? (
                 <div className="ml-4 mt-2">
                   {relatedAnswers.map((a) => (
-                    <p key={a._id} className="text-gray-300">
-                      ➤ {a.text}
+                    <p key={a._id}>
+                      ➤
+                      <div
+                        className="prose prose-invert max-w-none text-gray-300 whitespace-pre-line"
+                        dangerouslySetInnerHTML={{ __html: a.text }}
+                      />
                     </p>
                   ))}
                 </div>

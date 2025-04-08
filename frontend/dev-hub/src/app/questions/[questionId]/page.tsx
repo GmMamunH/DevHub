@@ -47,7 +47,7 @@ export default function QuestionDetail() {
       <div className="p-5 bg-teal-800 shadow-lg rounded-lg">
         <h2 className="text-2xl font-bold py-2">{question.title}</h2>
         <div
-          className="text-gray-200 whitespace-pre-line text-base"
+          className="text-gray-200 text-base prose prose-invert max-w-none whitespace-pre-line"
           dangerouslySetInnerHTML={{ __html: question.description }}
         ></div>
       </div>

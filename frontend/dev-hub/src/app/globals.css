@@ -18,6 +18,7 @@
     --foreground: #ededed;
   }
 }
+@plugin "@tailwindcss/typography";
 
 body {
   background: var(--background);
