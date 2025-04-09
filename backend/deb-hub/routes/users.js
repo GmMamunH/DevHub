@@ -25,5 +25,20 @@ router.get("/profile/:userId", authMiddleware, async (req, res) => {
   }
 });
 
+// ইউজার প্রোফাইল আপডেট
+router.put("/profile/:userId", authMiddleware, async (req, res) => {
+  try {
+    const { username, email, profilePicture } = req.body;
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.userId,
+      { username, email, profilePicture },
+      { new: true, runValidators: true }
+    ).select("-password");
+
+    res.json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ error: "Server error" });
+  }
+});
 
 module.exports = router;

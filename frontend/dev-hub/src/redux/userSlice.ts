@@ -15,6 +15,25 @@ export const fetchUserProfile = createAsyncThunk(
   }
 );
 
+export const updateUserProfile = createAsyncThunk(
+  "user/updateProfile",
+  async ({ userId, username, email, profilePicture }: any) => {
+    const token = localStorage.getItem("token");
+    const response = await fetch(
+      `http://localhost:5000/api/users/profile/${userId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+        body: JSON.stringify({ username, email, profilePicture }),
+      }
+    );
+    return response.json();
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState: { user: null, questions: [], answers: [] },

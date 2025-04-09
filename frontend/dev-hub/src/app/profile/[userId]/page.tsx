@@ -4,6 +4,7 @@ import { fetchUserProfile } from "@/redux/userSlice";
 import { RootState, AppDispatch } from "@/redux/store";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
+import EditProfile from "@/components/EditProfile";
 
 export default function UserProfile() {
   const params = useParams();
@@ -26,7 +27,7 @@ export default function UserProfile() {
     <div className="p-6 bg-teal-700 rounded-lg">
       <h2 className="text-2xl font-bold">{user.username}</h2>
       <p className="text-gray-300">{user.email}</p>
-
+      <EditProfile />
       <div className="mt-4">
         <h3 className="text-xl font-semibold">My Questions & Answers</h3>
         {questions.map((q) => {
