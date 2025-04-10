@@ -5,18 +5,22 @@ const Question = require("../models/Question");
 const Answer = require("../models/Answer");
 const authMiddleware = require("../middleware");
 
-// ইউজার প্রোফাইল ডাটা
 router.get("/profile/:userId", authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.params.userId).select("-password");
     if (!user) return res.status(404).json({ error: "User not found" });
 
-    const questions = await Question.find({ user: req.params.userId }).sort({
+    // ঐ ইউজারের করা প্রশ্ন
+    const questions = await Question.find({ user: user._id }).sort({
       createdAt: -1,
     });
 
-    const answers = await Answer.find({ user: req.params.userId })
-      .populate("question", "_id title") // এখানে question data পাবে
+    const questionIds = questions.map((q) => q._id);
+
+    // ঐ সব প্রশ্নে যেকোনো ইউজারের করা উত্তর
+    const answers = await Answer.find({ question: { $in: questionIds } })
+      .populate("user", "username") // উত্তর দাতার তথ্য
+      .populate("question", "title description") // প্রশ্নের তথ্য
       .sort({ createdAt: -1 });
 
     res.json({ user, questions, answers });
@@ -24,6 +28,7 @@ router.get("/profile/:userId", authMiddleware, async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
+
 
 // ইউজার প্রোফাইল আপডেট
 router.put("/profile/:userId", authMiddleware, async (req, res) => {

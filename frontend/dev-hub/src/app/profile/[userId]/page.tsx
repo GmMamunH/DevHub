@@ -15,8 +15,6 @@ export default function UserProfile() {
     (state: RootState) => state.user
   );
 
-  // console.log(answers);
-
   useEffect(() => {
     if (userId) dispatch(fetchUserProfile(userId));
   }, [dispatch, userId]);
@@ -24,33 +22,60 @@ export default function UserProfile() {
   if (!user) return <p>Loading...</p>;
 
   return (
-    <div className="p-6 bg-teal-700 rounded-lg">
-      <h2 className="text-2xl font-bold">{user.username}</h2>
-      <p className="text-gray-300">{user.email}</p>
-      <EditProfile />
-      <div className="mt-4">
-        <h3 className="text-xl font-semibold">My Questions & Answers</h3>
+    <div className="p-4 sm:p-6 bg-teal-900 min-h-screen rounded-lg max-w-4xl mx-auto text-white">
+      <div className="mb-6">
+        <h2 className="text-2xl sm:text-3xl font-bold">{user.username}</h2>
+        <p className="text-gray-300">{user.email}</p>
+        <EditProfile />
+      </div>
+
+      <div>
+        <h3 className="text-xl sm:text-2xl font-semibold mb-4">
+          My Questions & Answers
+        </h3>
+
         {questions.map((q) => {
           const relatedAnswers = answers.filter(
             (a) => a.question?._id === q._id
           );
+
           return (
             <div
               key={q._id}
-              className="p-4 bg-gray-700 rounded-lg shadow-sm mt-4"
+              className="p-4 bg-gray-800 rounded-lg shadow-md mb-6"
             >
-              <p className="text-white font-semibold">Q: {q.title}</p>
+              <p className="text-lg font-semibold mb-1 text-white">
+                Q: {q.title}
+              </p>
+              {q.description && (
+                <div
+                  className="prose prose-invert max-w-none text-gray-100 whitespace-pre-line"
+                  dangerouslySetInnerHTML={{ __html: q.description }}
+                />
+              )}
+
+              <h4 className="text-gray-200 font-medium mt-2 mb-1">
+                Answers ({relatedAnswers.length}):
+              </h4>
 
               {relatedAnswers.length > 0 ? (
-                <div className="ml-4 mt-2">
+                <div className="ml-4 space-y-3">
                   {relatedAnswers.map((a) => (
-                    <p key={a._id}>
-                      ➤
+                    <div
+                      key={a._id}
+                      className="bg-gray-900 rounded-md p-3 shadow-sm"
+                    >
+                      <p className="text-sm text-gray-400 mb-1">
+                        Answered by:{" "}
+                        <span className="text-white font-medium">
+                          {a.user?.username}
+                        </span>
+                      </p>
                       <div
                         className="prose prose-invert max-w-none text-gray-300 whitespace-pre-line"
                         dangerouslySetInnerHTML={{ __html: a.text }}
                       />
-                    </p>
+                    </div>
                   ))}
                 </div>
               ) : (
