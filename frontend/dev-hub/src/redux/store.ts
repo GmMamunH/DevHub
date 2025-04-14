@@ -8,14 +8,14 @@ import questionReducer from "./questionSlice";
 import answerReducer from "./answerSlice";
 import userReducer from "./userSlice";
 
-// persist করার config
+// persist  config
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth"], // শুধু auth persist করবো
+  whitelist: ["auth"]
 };
 
-// সব reducer একসাথে combine
+// reducer  combine
 const rootReducer = combineReducers({
   auth: authReducer,
   questions: questionReducer,
@@ -23,19 +23,19 @@ const rootReducer = combineReducers({
   user: userReducer,
 });
 
-// persisted reducer বানাও
+// persisted reducer 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-// store তৈরি
+// store 
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false, // redux-persist এর জন্য এটা disable করতে হয়
+      serializableCheck: false,
     }),
 });
 
-// persistor তৈরি
+// persistor 
 export const persistor = persistStore(store);
 
 // types

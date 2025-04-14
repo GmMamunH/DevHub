@@ -3,7 +3,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Provider } from "react-redux";
-import { store, persistor } from "@/redux/store"; // persistStore আনতে হবে
+import { store, persistor } from "@/redux/store"; // persistStore 
 import Navbar from "@/components/Navbar";
 import { ToastContainer } from "react-toastify";
 import { PersistGate } from "redux-persist/integration/react"; // PersistGate import

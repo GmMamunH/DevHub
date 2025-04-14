@@ -9,7 +9,7 @@ import { RootState, AppDispatch } from "@/redux/store";
 
 interface Answer {
   _id: string;
-  text: string; // HTML Format থাকবে
+  text: string; 
   user: { username: string };
   upvotes: { length: number };
   downvotes: { length: number };

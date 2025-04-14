@@ -11,7 +11,7 @@ export default function Login() {
   const router = useRouter();
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
 
-  // যদি ইউজার লগইন থাকে, তাহলে তাকে হোমপেজে পাঠানো হবে
+ 
   useEffect(() => {
     if (isAuthenticated) {
       router.push("/");

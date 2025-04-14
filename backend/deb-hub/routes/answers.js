@@ -4,7 +4,7 @@ const authMiddleware = require("../middleware");
 
 const router = express.Router();
 
-// নির্দিষ্ট প্রশ্নের উত্তর পোস্ট করা
+// answer question / comment
 router.post("/:questionId", authMiddleware, async (req, res) => {
   try {
     const { text } = req.body;
@@ -20,7 +20,7 @@ router.post("/:questionId", authMiddleware, async (req, res) => {
   }
 });
 
-// নির্দিষ্ট প্রশ্নের সব উত্তর পাওয়া
+// gelt all answer
 router.get("/:questionId", async (req, res) => {
   try {
     const answers = await Answer.find({
@@ -38,7 +38,7 @@ router.put("/:id/upvote", authMiddleware, async (req, res) => {
     const answer = await Answer.findById(req.params.id);
     if (!answer) return res.status(404).json({ error: "Answer not found" });
 
-    // আগের ভোট থাকলে সরিয়ে ফেলুন
+    // remove previous vote
     answer.downvotes = answer.downvotes.filter((id) => id.toString() !== req.user.id);
     if (!answer.upvotes.includes(req.user.id)) {
       answer.upvotes.push(req.user.id);
@@ -59,7 +59,7 @@ router.put("/:id/downvote", authMiddleware, async (req, res) => {
     const answer = await Answer.findById(req.params.id);
     if (!answer) return res.status(404).json({ error: "Answer not found" });
 
-    // আগের ভোট থাকলে সরিয়ে ফেলুন
+    // remove previous vote
     answer.upvotes = answer.upvotes.filter((id) => id.toString() !== req.user.id);
     if (!answer.downvotes.includes(req.user.id)) {
       answer.downvotes.push(req.user.id);

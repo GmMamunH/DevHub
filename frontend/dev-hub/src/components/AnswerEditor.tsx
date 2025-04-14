@@ -49,7 +49,7 @@ import {
   Twitter,
   Underline,
 } from "reactjs-tiptap-editor/extension-bundle";
-// ✅ ইমেজ আপলোড ফাংশন (Blob URL তৈরি করবে)
+// ✅ image upload (Blob URL)
 const handleImageUpload = (file: File): Promise<string> => {
   return new Promise((resolve) => {
     const reader = new FileReader();
@@ -96,10 +96,10 @@ const extensions = [
   Katex,
   Emoji,
   Image.configure({
-    upload: handleImageUpload, // ✅ ইমেজ আপলোড ফাংশন ব্যবহার করা হলো
-    resourceImage: "both", // ✅ ইউজার URL বা Upload দুইভাবেই ইমেজ দিতে পারবে
-    acceptMimes: ["image/png", "image/jpeg"], // ✅ শুধুমাত্র PNG এবং JPEG অনুমোদিত
-    maxSize: 5 * 1024 * 1024, // ✅ সর্বোচ্চ ৫MB পর্যন্ত ইমেজ আপলোড করা যাবে
+    upload: handleImageUpload, 
+    resourceImage: "both", 
+    acceptMimes: ["image/png", "image/jpeg"],
+    maxSize: 5 * 1024 * 1024, 
   }),
 
   Color.configure({ spacer: true }),

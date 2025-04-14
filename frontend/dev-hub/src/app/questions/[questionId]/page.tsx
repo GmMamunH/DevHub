@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchQuestions } from "@/redux/questionSlice";
 import AnswerList from "@/components/AnswerList";
-import AnswerForm from "@/components/AnswerForm";
 import { RootState, AppDispatch } from "@/redux/store";
 import AnswerEditor from "@/components/AnswerEditor";
 
@@ -51,7 +50,6 @@ export default function QuestionDetail() {
           dangerouslySetInnerHTML={{ __html: question.description }}
         ></div>
       </div>
-      {/* <AnswerForm questionId={questionId} /> */}
       <AnswerEditor questionId={questionId} />
       <AnswerList questionId={questionId} />
     </div>

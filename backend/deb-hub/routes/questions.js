@@ -20,7 +20,7 @@ router.post("/", authMiddleware, async (req, res) => {
   }
 });
 
-// সব প্রশ্ন পাওয়া
+// get all question
 router.get("/", async (req, res) => {
   try {
     const questions = await Question.find().populate("user", "username");

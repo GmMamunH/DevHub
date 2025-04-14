@@ -10,17 +10,17 @@ router.get("/profile/:userId", authMiddleware, async (req, res) => {
     const user = await User.findById(req.params.userId).select("-password");
     if (!user) return res.status(404).json({ error: "User not found" });
 
-    // ঐ ইউজারের করা প্রশ্ন
+    // owner user question
     const questions = await Question.find({ user: user._id }).sort({
       createdAt: -1,
     });
 
     const questionIds = questions.map((q) => q._id);
 
-    // ঐ সব প্রশ্নে যেকোনো ইউজারের করা উত্তর
+    // All user question
     const answers = await Answer.find({ question: { $in: questionIds } })
-      .populate("user", "username") // উত্তর দাতার তথ্য
-      .populate("question", "title description") // প্রশ্নের তথ্য
+      .populate("user", "username") 
+      .populate("question", "title description") 
       .sort({ createdAt: -1 });
 
     res.json({ user, questions, answers });
@@ -30,7 +30,7 @@ router.get("/profile/:userId", authMiddleware, async (req, res) => {
 });
 
 
-// ইউজার প্রোফাইল আপডেট
+// Update User Profile
 router.put("/profile/:userId", authMiddleware, async (req, res) => {
   try {
     const { username, email, profilePicture } = req.body;

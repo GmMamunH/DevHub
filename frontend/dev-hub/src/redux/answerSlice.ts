@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// ✅ Answer ইন্টারফেস (TypeScript)
+// ✅ Answer Interface (TypeScript)
 interface Answer {
   _id: string;
   text: string;
