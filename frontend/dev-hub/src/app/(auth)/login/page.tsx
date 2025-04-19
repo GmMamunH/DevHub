@@ -5,6 +5,7 @@ import { loginUser } from "@/redux/authSlice";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 export default function Login() {
   const dispatch = useDispatch<AppDispatch>();
@@ -14,6 +15,7 @@ export default function Login() {
  
   useEffect(() => {
     if (isAuthenticated) {
+      toast.success("Login successfully!");
       router.push("/");
     }
   }, [isAuthenticated, router]);

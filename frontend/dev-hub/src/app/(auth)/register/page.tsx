@@ -3,12 +3,12 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { toast } from "react-toastify";
 
 export default function Register() {
   const router = useRouter();
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
 
-  
   useEffect(() => {
     if (isAuthenticated) {
       router.push("/");
@@ -34,7 +34,9 @@ export default function Register() {
     });
 
     const data = await res.json();
-    alert(data.message);
+    // alert(data.message);
+
+    toast.success(data.message);
 
     if (res.ok) {
       router.push("/login");
@@ -47,7 +49,7 @@ export default function Register() {
         className="bg-teal-800 p-6 shadow-lg rounded-lg"
         onSubmit={handleSubmit}
       >
-        <h2 className="text-xl font-bold mb-4 text-sky-800">Register</h2>
+        <h2 className="text-xl font-bold mb-4 text-white">Register</h2>
         <input
           className="border p-2 w-full mb-3"
           type="text"

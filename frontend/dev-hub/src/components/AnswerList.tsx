@@ -43,7 +43,7 @@ export default function AnswerList({ questionId }: { questionId: string }) {
         >
           {/* ✅ Tiptap HTML Render */}
           <div
-            className="prose prose-invert max-w-none text-base wwhitespace-pre-line"
+            className="prose prose-invert max-w-none text-base whitespace-pre-line"
             dangerouslySetInnerHTML={{ __html: answer.text }}
           />
           <small className="text-gray-400">— {answer.user.username}</small>
