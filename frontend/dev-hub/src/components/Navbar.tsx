@@ -3,14 +3,22 @@ import { RootState, AppDispatch } from "@/redux/store";
 import { logout } from "@/redux/authSlice";
 import Link from "next/link";
 import SearchBar from "./SearchBar";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 export default function Navbar() {
   const { isAuthenticated, user } = useSelector(
     (state: RootState) => state.auth
   );
   const dispatch = useDispatch<AppDispatch>();
-  console.log(user);
-  
+
+  const router = useRouter();
+
+  const logOut = () => {
+    dispatch(logout());
+    toast.success("Logout successfully!");
+    router.push("/");
+  };
 
   return (
     <nav className="bg-gray-800 text-white p-4 flex items-center justify-between">
@@ -34,10 +42,7 @@ export default function Navbar() {
           </Link>
           <div>
             <span className="mr-4">Welcome, {user?.username}</span>
-            <button
-              className="bg-red-500 px-3 py-1 rounded"
-              onClick={() => dispatch(logout())}
-            >
+            <button className="bg-red-500 px-3 py-1 rounded" onClick={logOut}>
               Logout
             </button>
           </div>
